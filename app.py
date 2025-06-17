@@ -100,7 +100,7 @@ model = load_model()
 backbone = model.get_layer("efficientnetb0")
 
 # ---------------------- grad-cam helper ----------------------
-def generate_gradcam(batch, model, class_idx, target_layer="block6a_project_conv"):
+def generate_gradcam(batch, model, class_idx, target_layer="block5a_project_conv"):
     explainer = GradCAM()
     return explainer.explain(
         validation_data=(batch, None),

@@ -3,4 +3,4 @@ tensorflow      # CPU build is lighter and installs quicker
 tf-explain==0.3.1
 Pillow==10.3.0
 numpy==1.26.4
-opencv-python
+opencv-python==4.10.0.82

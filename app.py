@@ -3,7 +3,7 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-from tf_explain.core.grad_cam import GradCAMPlusPlus as GradCAM
+from tf_explain.core.grad_cam import GradCAM as GradCAM
 
 # ------------------------ disease info ------------------------
 DISEASE_INFO = {

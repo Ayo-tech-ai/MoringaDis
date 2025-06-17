@@ -47,6 +47,16 @@ DISEASE_INFO = {
             "Mulch to maintain even soil moisture.",
         ],
     },
+    "Healthy Leaf": {
+        "name": "Healthy Leaf",
+        "cause": "No signs of disease or stress detected",
+        "symptoms": "Leaf appears green, intact, and vibrant — no visible lesions, discoloration, or abnormalities.",
+        "management": [
+            "Maintain regular watering and balanced fertilisation.",
+            "Continue monitoring for any future changes.",
+            "Keep surrounding area clean to reduce disease risk.",
+        ],
+    },
 }
 
 CLASS_NAMES = list(DISEASE_INFO.keys())

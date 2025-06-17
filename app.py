@@ -106,8 +106,8 @@ if uploaded_file:
     arr = tf.keras.applications.efficientnet.preprocess_input(arr)
     arr = np.expand_dims(arr, axis=0)
 
-    # 3. Predict
-    preds = backbone(arr, training=False)
+    # 3. Predict  (use the entire model, not just the backbone)
+    preds = model(arr, training=False)      # <-- NEW line (gets 4 logits)
     class_idx = int(np.argmax(preds))
 
     # Safety check in case prediction is out of range

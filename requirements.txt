@@ -1,6 +1,6 @@
 streamlit==1.33.0
-tensorflow      # CPU build is lighter and installs quicker
+tensorflow==2.16.1          # cp311 wheel exists
 tf-explain==0.3.1
+opencv-python==4.10.0.82
 Pillow==10.3.0
 numpy==1.26.4
-opencv-python==4.10.0.82

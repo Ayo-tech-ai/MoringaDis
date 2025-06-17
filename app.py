@@ -1,9 +1,13 @@
 # --------------------------- imports ---------------------------
 import streamlit as st
+
+# Page config MUST be before any other Streamlit command
+st.set_page_config(page_title="Moringa Leaf Disease Detector", layout="wide")
+
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-from tf_explain.core.grad_cam import GradCAM as GradCAM
+from tf_explain.core.grad_cam import GradCAM
 
 # ------------------------ disease info ------------------------
 DISEASE_INFO = {
@@ -64,15 +68,16 @@ def generate_gradcam(image_batch, model, class_idx, target_layer="block4c_projec
         validation_data=(image_batch, None),
         model=model,
         class_index=class_idx,
-        layer_name=target_layer
+        layer_name=target_layer,
     )
     return cam
 
 # -------------------------- UI --------------------------
-st.set_page_config(page_title="Moringa Leaf Disease Detector", layout="wide")
 st.title("🌿 Moringa Leaf Disease Detector with Grad-CAM")
 
-uploaded_file = st.file_uploader("Upload a moringa leaf image", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader(
+    "Upload a moringa leaf image", type=["jpg", "jpeg", "png"]
+)
 
 if uploaded_file:
     # 1. Display image
@@ -92,14 +97,4 @@ if uploaded_file:
 
     # 4. Grad-CAM heatmap
     heatmap = generate_gradcam(arr, backbone, class_idx)
-    st.image(heatmap, caption="Grad-CAM++ Heatmap", use_column_width=True)
-
-    # 5. Disease info
-    info = DISEASE_INFO[class_name]
-    with st.expander("🩺 Disease Information", expanded=True):
-        st.markdown(f"### {info['name']}")
-        st.caption(f"**Cause:** {info['cause']}")
-        st.markdown(f"**Symptoms:** {info['symptoms']}")
-        st.markdown("**Management Tips:**")
-        for tip in info["management"]:
-            st.markdown(f"- {tip}")
+    st.image(heatmap, caption="Grad-CAM Heatmap", use_column_width=True)

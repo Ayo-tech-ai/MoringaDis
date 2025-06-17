@@ -59,7 +59,12 @@ DISEASE_INFO = {
     },
 }
 
-CLASS_NAMES = list(DISEASE_INFO.keys())
+CLASS_NAMES = [
+    "Bacterial Leaf Spot",
+    "Cercospora Leaf Spot",
+    "Healthy Leaf",
+    "Yellow Leaf",
+]
 
 # ------------------------ load model ------------------------
 @st.cache_resource

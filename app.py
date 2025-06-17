@@ -1,7 +1,7 @@
 # --------------------------- imports ---------------------------
 import streamlit as st
 
-# Page config MUST be before any other Streamlit command
+# Page config must be set before any other Streamlit calls
 st.set_page_config(page_title="Moringa Leaf Disease Detector", layout="wide")
 
 import tensorflow as tf
@@ -35,6 +35,18 @@ DISEASE_INFO = {
             "Prune overcrowded branches to improve air flow.",
         ],
     },
+    "Healthy Leaf": {
+        "name": "Healthy Leaf",
+        "cause": "No signs of disease or stress detected",
+        "symptoms": (
+            "Leaf appears green, intact, and vibrant — no visible lesions, discoloration, or abnormalities."
+        ),
+        "management": [
+            "Maintain regular watering and balanced fertilisation.",
+            "Continue monitoring for any future changes.",
+            "Keep surrounding area clean to reduce disease risk.",
+        ],
+    },
     "Yellow Leaf": {
         "name": "Nutrient / Water Stress (Yellow Leaf)",
         "cause": "Typically nitrogen or iron deficiency; sometimes over-watering",
@@ -45,16 +57,6 @@ DISEASE_INFO = {
             "Apply balanced NPK fertiliser or iron chelate.",
             "Check soil drainage; avoid prolonged water-logging.",
             "Mulch to maintain even soil moisture.",
-        ],
-    },
-    "Healthy Leaf": {
-        "name": "Healthy Leaf",
-        "cause": "No signs of disease or stress detected",
-        "symptoms": "Leaf appears green, intact, and vibrant — no visible lesions, discoloration, or abnormalities.",
-        "management": [
-            "Maintain regular watering and balanced fertilisation.",
-            "Continue monitoring for any future changes.",
-            "Keep surrounding area clean to reduce disease risk.",
         ],
     },
 }
@@ -107,9 +109,24 @@ if uploaded_file:
     # 3. Predict
     preds = backbone(arr, training=False)
     class_idx = int(np.argmax(preds))
-    class_name = CLASS_NAMES[class_idx]
-    st.success(f"🧠 Predicted class: **{class_name}**")
 
-    # 4. Grad-CAM heatmap
-    heatmap = generate_gradcam(arr, backbone, class_idx)
-    st.image(heatmap, caption="Grad-CAM Heatmap", use_column_width=True)
+    # Safety check in case prediction is out of range
+    if class_idx >= len(CLASS_NAMES):
+        st.error("❌ Prediction index out of range.")
+    else:
+        class_name = CLASS_NAMES[class_idx]
+        st.success(f"🧠 Predicted class: **{class_name}**")
+
+        # 4. Grad-CAM heatmap
+        heatmap = generate_gradcam(arr, backbone, class_idx)
+        st.image(heatmap, caption="Grad-CAM Heatmap", use_column_width=True)
+
+        # 5. Disease info
+        info = DISEASE_INFO[class_name]
+        with st.expander("🩺 Disease Information", expanded=True):
+            st.markdown(f"### {info['name']}")
+            st.caption(f"**Cause:** {info['cause']}")
+            st.markdown(f"**Symptoms:** {info['symptoms']}")
+            st.markdown("**Management Tips:**")
+            for tip in info["management"]:
+                st.markdown(f"- {tip}")
